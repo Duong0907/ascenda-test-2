@@ -46,13 +46,17 @@ class Image:
         if self.description == None:
             self.description = location.description 
     
-    
 
 @dataclass
 class Images:
     rooms: list[Image]
     site: list[Image]
     amenities: list[Image]
+
+    def __init__(self, rooms=[], site=[], amenities=[]):
+        self.rooms = rooms
+        self.site = site
+        self.amenities = amenities
 
     def merge(self, image):
         self.rooms = list(set(self.rooms + image.rooms))
@@ -72,13 +76,25 @@ class Hotel:
     booking_conditions: list[str]
 
     def merge(self, hotel):
-        self.id = id or hotel.id
-        self.destination_id = destination_id or hotel.destination_id
-        self.name = name or hotel.name
-        self.name = name or hotel.name
-        self.name = name or hotel.name
-        self.name = name or hotel.name
-        self.name = name or hotel.name
+        if self.id == None:
+            self.id = hotel.id
+
+        if self.destination_id == None:
+            self.destination_id = hotel.destination_id
+
+        if self.name == None:
+            self.name = hotel.name
+
+        if self.description == None:
+            self.description = hotel.description
+
+        self.location.merge(hotel.location)
+
+        self.amenities.merge(hotel.amenities)
+
+        self.images.merge(hotel.images)
+
+        self.booking_conditions = list(set(self.booking_conditions + hotel.booking_conditions))
 
     def to_string(self):
         return json.dumps(self, default=vars, indent=2)

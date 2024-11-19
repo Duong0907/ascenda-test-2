@@ -12,16 +12,16 @@ class Paperflies(BaseSupplier):
         site = [Image(site['link'], site['caption']) for site in dto['images']['site']]
 
         return Hotel(
-            id=dto['hotel_id'].strip(),
+            id=dto['hotel_id'],
             destination_id=dto['hotel_id'],
-            name=dto['hotel_name'].strip(),
-            description=dto['details'].strip(),
+            name=dto['hotel_name'],
+            description=dto['details'],
             location=Location(
                 lat=None,
                 lng=None,
-                address=dto['location']['address'].strip(),
+                address=dto['location']['address'],
                 city=None,
-                country=dto['location']['country'].strip()
+                country=dto['location']['country']
             ),
             amenities=Amenities(
                 general=dto['amenities']['general'],
@@ -30,7 +30,7 @@ class Paperflies(BaseSupplier):
             images=Images(
                 rooms=rooms,
                 site=site,
-                amenities=None
+                amenities=[]
             ),
             booking_conditions=dto['booking_conditions']
         )

@@ -12,9 +12,9 @@ class Patagonia(BaseSupplier):
         amenities = [Image(site['url'], site['description']) for site in dto['images']['amenities']]
 
         return Hotel(
-            id=dto['id'].strip(),
+            id=dto['id'],
             destination_id=dto['destination'],
-            name=dto['name'].strip(),
+            name=dto['name'],
             description=dto['info'],
             location=Location(
                 lat=dto['lat'],
@@ -24,13 +24,13 @@ class Patagonia(BaseSupplier):
                 country=None
             ),
             amenities=Amenities(
-                general=dto['amenities'],
-                room=None
+                general=dto['amenities'] if dto['amenities'] else [],
+                room=[]
             ),
             images=Images(
                 rooms=rooms,
-                site=None,
+                site=[],
                 amenities=amenities
             ),
-            booking_conditions=None
+            booking_conditions=[]
         )

@@ -9,21 +9,21 @@ class Acme(BaseSupplier):
     @staticmethod
     def parse(dto: dict) -> Hotel:
         return Hotel(
-            id=dto['Id'].strip(),
+            id=dto['Id'],
             destination_id=dto['DestinationId'],
-            name=dto['Name'].strip(),
-            description=dto['Description'].strip(),
+            name=dto['Name'],
+            description=dto['Description'],
             location=Location(
                 lat=dto['Latitude'],
                 lng=dto['Longitude'],
-                address=dto['Address'].strip(),
-                city= dto['City'].strip(),
-                country= dto['Country'].strip()
+                address=dto['Address'],
+                city= dto['City'],
+                country= dto['Country']
             ),
             amenities=Amenities(
                 general=dto['Facilities'],
-                room=None
+                room=[]
             ),
-            images=None,
-            booking_conditions=None
+            images=Images(),
+            booking_conditions=[]
         )
