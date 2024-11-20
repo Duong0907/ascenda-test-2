@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from utils import merge_two_list, merge_two_value
 
 @dataclass
 class Location:
@@ -9,20 +10,11 @@ class Location:
     country: str 
 
     def merge(self, location):
-        if self.lat == None:
-            self.lat = location.lat
-
-        if self.lng == None:
-            self.lng = location.lng
-
-        if self.address == None:
-            self.address = location.address
-
-        if self.city == None:
-            self.city = location.city
-
-        if self.country == None:
-            self.country = location.country
+        self.lat = merge_two_value(self.lat, location.lat)
+        self.lng = merge_two_value(self.lng, location.lng)
+        self.address = merge_two_value(self.address, location.address)
+        self.city = merge_two_value(self.city, location.city)
+        self.country = merge_two_value(self.country, location.country)
 
 
 @dataclass
@@ -31,20 +23,18 @@ class Amenities:
     room: list[str]
 
     def merge(self, amenities):
-        self.general = list(set(self.general + amenities.general))
-        self.room = list(set(self.room + amenities.room))
+        self.general = merge_two_list(self.general, amenities.general)
+        self.room = merge_two_list(self.room, amenities.room)
     
+
 @dataclass
 class Image:
     link: str
     description: str
 
     def merge(self, image):
-        if self.link == None:
-            self.link = location.link 
-
-        if self.description == None:
-            self.description = location.description 
+        self.link = merge_two_value(self.link, location.link) 
+        self.description = merge_two_value(self.description, location.description) 
     
 
 @dataclass
@@ -58,10 +48,11 @@ class Images:
         self.site = site
         self.amenities = amenities
 
-    def merge(self, image):
-        self.rooms = list(set(self.rooms + image.rooms))
-        self.site = list(set(self.site + image.site))
-        self.amenities = list(set(self.amenities + image.amenities))
+
+    def merge(self, images):
+        self.rooms = merge_two_list(self.rooms, images.rooms)
+        self.site = merge_two_list(self.site, images.site)
+        self.amenities = merge_two_list(self.amenities, images.amenities)
         
 
 @dataclass
@@ -76,25 +67,13 @@ class Hotel:
     booking_conditions: list[str]
 
     def merge(self, hotel):
-        if self.id == None:
-            self.id = hotel.id
-
-        if self.destination_id == None:
-            self.destination_id = hotel.destination_id
-
-        if self.name == None:
-            self.name = hotel.name
-
-        if self.description == None:
-            self.description = hotel.description
+        self.id = merge_two_value(self.id, hotel.id)
+        self.destination_id = merge_two_value(self.destination_id, hotel.destination_id)
+        self.name = merge_two_value(self.name, hotel.name)
+        self.description = merge_two_value(self.description, hotel.description)
 
         self.location.merge(hotel.location)
-
         self.amenities.merge(hotel.amenities)
-
         self.images.merge(hotel.images)
 
-        self.booking_conditions = list(set(self.booking_conditions + hotel.booking_conditions))
-
-    def to_string(self):
-        return json.dumps(self, default=vars, indent=2)
+        self.booking_conditions = merge_two_list(self.booking_conditions, hotel.booking_conditions)

@@ -16,18 +16,28 @@ class HotelsService:
         while i < len(all_supplier_data):
             if curr.id == all_supplier_data[i].id:
                 curr.merge(all_supplier_data[i])
-                # all_supplier_data.pop(i)
             else:
                 self.hotel_data.append(curr)
                 curr = all_supplier_data[i]
 
             i += 1
+            if curr.id == None:
+                print(i)
 
         if curr not in self.hotel_data:
             self.hotel_data.append(curr)
-
-
-        # self.hotel_data = all_supplier_data
+        # print(json.dumps(self.hotel_data, default=vars, indent=2))
 
     def find(self, hotel_ids, destination_ids):
-        return self.hotel_data
+        if hotel_ids == "none" or destination_ids == "none":
+            return self.hotel_data
+
+        result = []
+        hotel_id_list = hotel_ids.split(',')
+        destination_id_list = destination_ids.split(',')
+
+        for hotel in self.hotel_data:
+            if hotel.id in hotel_id_list and str(hotel.destination_id) in destination_id_list:
+                result.append(hotel)
+
+        return result

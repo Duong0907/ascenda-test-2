@@ -2,10 +2,8 @@ import json
 import argparse
 import requests
 
-from Acme import Acme 
-from Paperflies import Paperflies 
-from Patagonia import Patagonia 
-from HotelsService import HotelsService
+from suppliers import Acme, Paperflies, Patagonia
+from services import HotelsService
 
 
 def fetch_hotels(hotel_ids, destination_ids):
@@ -28,13 +26,8 @@ def fetch_hotels(hotel_ids, destination_ids):
     filtered = svc.find(hotel_ids, destination_ids)
 
 
-    f = open("output.txt", "w")
-    f.write(json.dumps(filtered, default=vars, indent=2))
-    f.close()
-
-
     # # Return as json
-    return json.dumps(filtered)
+    return json.dumps(filtered, default=vars, indent=2)
     
 
 def main():
@@ -50,7 +43,7 @@ def main():
     destination_ids = args.destination_ids
     
     result = fetch_hotels(hotel_ids, destination_ids)
-    # print(result)
+    print(result)
 
 if __name__ == "__main__":
     main()
